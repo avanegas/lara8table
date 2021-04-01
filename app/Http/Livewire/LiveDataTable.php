@@ -9,22 +9,26 @@ use Livewire\WithPagination;
 
 class LiveDataTable extends Component
 {
-	use WithPagination;
+    use WithPagination;
 
-	public $search = '';
-	public $perPage = 5;
-	public $camp = null;
-	public $order = null;
-	public $icon = '-circle';
-  public $user_role = '';
-  public $showModal = 'hidden';
+    public $search = '';
+    public $perPage = 5;
+    public $camp = null;
+    public $order = null;
+    public $icon = '-circle';
+    public $user_role = '';
+    public $showModal = 'hidden';
 
-	protected $queryString = [
-		'search' => ['except' => ''],
-		'camp'   => ['except' => null],
-		'order'  => ['except' => null],				
-	];
+    protected $queryString = [
+      'search' => ['except' => ''],
+      'camp'   => ['except' => null],
+      'order'  => ['except' => null],				
+    ];
 
+    protected $listeners = [
+      'userListUpdate' => 'render'
+    ];
+  
     public function render()
     {
   		$users = User::termino($this->search)
