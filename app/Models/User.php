@@ -28,6 +28,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'profile_photo_path',
     ];
 
     /**
@@ -60,8 +61,14 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function apellido(){
-        return $this->hasOne(Apellido::class, 'user_id', 'id');
+    public function apellido()
+    {
+        return $this->hasOne(Apellido::class);
+    }
+
+    public function getImageUserAttribute()
+    {
+        return $this->profile_photo_path ?? 'img/tecnico.png';
     }
 
     public function getRolAttribute(): string

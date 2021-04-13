@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RequestUpdateUser extends FormRequest
@@ -21,14 +22,25 @@ class RequestUpdateUser extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules($user)
     {
-        return [
+        $values = [
             'name' => 'required|min:3|max:30',
             'lastname' => 'required|min:3|max:30',
-            'email' => 'email|required',
+            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user)],
             'role' => 'required|in:client,seller,admin',
+            'profile_photo_path' => 'nullable|image',
         ];
+
+        if(!$user) {
+            $validation_password = [
+                'password' => 'required|confirmed',
+            ];
+            
+            $values = array_merge($values, $validation_password);
+        }
+
+        return $values;
     }
 
     public function messages()

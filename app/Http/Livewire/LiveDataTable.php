@@ -4,8 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Apellido;
 use App\Models\User;
-use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\{Component, WithPagination};
 
 class LiveDataTable extends Component
 {
@@ -26,7 +25,8 @@ class LiveDataTable extends Component
     ];
 
     protected $listeners = [
-      'userListUpdate' => 'render'
+      'userListUpdate' => 'render',
+      'deleteUserList' => 'deleteUser'
     ];
   
     public function render()
@@ -107,6 +107,20 @@ class LiveDataTable extends Component
 
     public function showModal(User $user)
     {
-      $this->emit('showModal', $user);
+      if($user->name){
+        $this->emit('showModal', $user);
+      } else {
+        $this->emit('showModalNewUser');
+      }
+      
+    }
+
+    public function deleteUser(User $user)
+    {
+      //dd($user);
+      $user->apellido()->delete();
+      $user->delete();
+
+      $this->emit('deleteUser', $user);
     }
 }

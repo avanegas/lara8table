@@ -12,4 +12,9 @@ class Apellido extends Model
  protected $fillable = [
  		'lastname', 'user_id'
  ];
+
+ public function user()
+ {
+     return $this->belongsTo(User::class);
+ }
 }
